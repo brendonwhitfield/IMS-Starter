@@ -11,7 +11,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.DBUtils;
 
 public class OrderDAO implements Dao<Order> {
@@ -22,8 +22,8 @@ public class OrderDAO implements Dao<Order> {
 	public Order modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long orderId = resultSet.getLong("order_id");
 		Long fkCustomerId = resultSet.getLong("fk_customer_id");
-		Long fkOrderContentsId = resultSet.getLong("fk_order_contents_id");
-		return new Order(orderId, fkCustomerId, fkOrderContentsId);
+		String address = resultSet.getString("address");
+		return new Order(orderId, fkCustomerId, address);
 	}
 
 	/**
@@ -70,9 +70,9 @@ public class OrderDAO implements Dao<Order> {
 	public Order create(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("INSERT INTO orders(fk_customer_id, fk_order_contents_id) VALUES (?, ?)");) {
+						.prepareStatement("INSERT INTO orders(fk_customer_id, address) VALUES (?, ?)");) {
 			statement.setLong(1, order.getFkCustomerId());
-			statement.setLong(2, order.getFkOrderContentsId());
+			statement.setString(2, order.getAddress());
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
@@ -111,9 +111,9 @@ public class OrderDAO implements Dao<Order> {
 	public Order update(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("UPDATE orders SET fk_customer_id = ?, fk_order_contents_id = ? WHERE order_id = ?");) {
-			statement.setLong(1, order.getFkCustomerId);
-			statement.setLong(2, order.getFkOrderContentsId());
+						.prepareStatement("UPDATE orders SET fk_customer_id = ?, address = ? WHERE order_id = ?");) {
+			statement.setLong(1, order.getFkCustomerId());
+			statement.setString(2, order.getAddress());
 			statement.executeUpdate();
 			return read(order.getOrderId());
 		} catch (Exception e) {
