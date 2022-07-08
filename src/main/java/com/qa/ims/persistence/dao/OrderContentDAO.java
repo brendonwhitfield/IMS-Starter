@@ -142,5 +142,36 @@ public class OrderContentDAO implements Dao<OrderContent> {
 		}
 		return 0;
 	}
-
+	/*
+	 * public OrderContent AddItem(OrderContent orderContent) { try (Connection
+	 * connection = DBUtils.getInstance().getConnection(); PreparedStatement
+	 * statement = connection
+	 * .prepareStatement("INSERT INTO order_contents(fk_item_id, quantity) VALUES (?, ?) WHERE fk_order_id = ?"
+	 * );) { statement.setLong(1, orderContent.getFkItemId()); statement.setLong(2,
+	 * orderContent.getQuantity()); statement.executeUpdate(); return
+	 * read(orderContent.getFkOrderId()); } catch (Exception e) { LOGGER.debug(e);
+	 * LOGGER.error(e.getMessage()); } return null; }
+	 * 
+	 * public OrderContent DeleteItem(OrderContent orderContent) { try (Connection
+	 * connection = DBUtils.getInstance().getConnection(); PreparedStatement
+	 * statement = connection
+	 * .prepareStatement("DELETE FROM order_contents(fk_item_id, quantity) WHERE fk_order_id = ?"
+	 * );) { statement.setLong(1, orderContent.getFkItemId()); statement.setLong(2,
+	 * orderContent.getQuantity()); statement.executeUpdate(); return
+	 * read(orderContent.getFkOrderId()); } catch (Exception e) { LOGGER.debug(e);
+	 * LOGGER.error(e.getMessage()); } return null; }
+	 */
+	
 }
+
+//read items in order next
+
+/*
+ * orderContentsId fkOrderId fkItemId quantity 1 4 5 2 2 4 4 3
+ */
+
+
+
+
+
+
