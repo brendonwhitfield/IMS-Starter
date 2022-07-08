@@ -26,7 +26,6 @@ public class IMS {
 	private final OrderController orders;
 	private final OrderContentsController orderContents;
 
-	
 	private final Utils utils;
 
 	public IMS() {
@@ -81,7 +80,7 @@ public class IMS {
 				break;
 			}
 
-			LOGGER.info(() ->"What would you like to do with " + domain.name().toLowerCase() + ":");
+			LOGGER.info(() -> "What would you like to do with " + domain.name().toLowerCase() + ":");
 
 			Action.printActions();
 			Action action = Action.getAction(utils);

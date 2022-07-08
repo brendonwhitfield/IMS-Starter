@@ -49,7 +49,7 @@ public class OrderContentsController implements CrudController<OrderContent> {
 		Long fkItemId = utils.getLong();
 		LOGGER.info("Please enter the quantity");
 		Long quantity = utils.getLong();
-		LOGGER.info("Please enter the price");
+		LOGGER.info("Please enter the price in GBP");
 		Long price = utils.getLong();
 		OrderContent orderContent = OrderContentDAO.create(new OrderContent(fkOrderId, fkItemId, quantity, price));
 		LOGGER.info("Order contents now created!");
@@ -69,7 +69,10 @@ public class OrderContentsController implements CrudController<OrderContent> {
 		Long fkItemId = utils.getLong();
 		LOGGER.info("Please enter the quantity");
 		Long quantity = utils.getLong();
-		OrderContent orderContent = OrderContentDAO.update(new OrderContent(orderContentsId, fkOrderId, fkItemId, quantity));
+		LOGGER.info("Please enter the price in GBP");
+		Long price = utils.getLong();
+		OrderContent orderContent = OrderContentDAO
+				.update(new OrderContent(orderContentsId, fkOrderId, fkItemId, quantity, price));
 		LOGGER.info("Order Contents Updated");
 		return orderContent;
 	}

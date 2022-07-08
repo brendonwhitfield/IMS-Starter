@@ -26,12 +26,6 @@ public class OrderContent {
 		this.setPrice(price);
 	}
 
-	/*
-	 * public Long cost(){
-	 * 
-	 * this.cost= price*quantity; return this.cost; }
-	 */
-
 	public Long getOrderContentsId() {
 		return orderContentsId;
 	}
@@ -84,7 +78,7 @@ public class OrderContent {
 	@Override
 	public String toString() {
 		return "OrderContent [orderContentsId=" + orderContentsId + ", fkOrderId=" + fkOrderId + ", fkItemId="
-				+ fkItemId + ", quantity=" + quantity + ", price=" + price + ", cost=" + getCost() + "]";
+				+ fkItemId + ", quantity=" + quantity + ", price=£" + price + ", cost=£" + getCost() + "]";
 	}
 
 	@Override

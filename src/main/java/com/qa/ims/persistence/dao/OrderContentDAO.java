@@ -1,6 +1,5 @@
 package com.qa.ims.persistence.dao;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +17,6 @@ import com.qa.ims.utils.DBUtils;
 public class OrderContentDAO implements Dao<OrderContent> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
-	// public Long quantity;
 
 	@Override
 	public OrderContent modelFromResultSet(ResultSet resultSet) throws SQLException {
@@ -29,10 +27,7 @@ public class OrderContentDAO implements Dao<OrderContent> {
 		Long price = resultSet.getLong("price");
 		return new OrderContent(orderContentsId, fkOrderId, fkItemId, quantity, price);
 	}
-	
-	
-	
-	
+
 	/**
 	 * Reads all order content data from the database
 	 * 
@@ -54,49 +49,12 @@ public class OrderContentDAO implements Dao<OrderContent> {
 		}
 		return new ArrayList<>();
 	}
-	//cost attempt
-/*	
- @Override 
-	public List<OrderContent> readCost() {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT quantity,fk_item_id FROM order_contents WHERE order_contents_id = ?");) {
-			List<OrderContent> orders = new ArrayList<>();
-			while (resultSet.next()) {
-				orders.add(modelFromResultSet(resultSet));
-			}
-			}
-			return orders;
-		} catch (SQLException e) {
-			LOGGER.debug(e);
-			LOGGER.error(e.getMessage());
-		}
-		return new ArrayList<>();
-		
-// cost attempt 2
-
-		public List<OrderContent> readAll() {
-	try (Connection connection = DBUtils.getInstance().getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT order_contents.quantity, items.item_price FROM order_contents JOIN items ON order_contents.fk_item_id = items.item_id");) {
-		List<OrderContent> orders = new ArrayList<>();
-		while (resultSet.next()) {
-			orders.add(modelFromResultSet(resultSet));
-		}
-		return orders;
-	} catch (SQLException e) {
-		LOGGER.debug(e);
-		LOGGER.error(e.getMessage());
-	}
-	return new ArrayList<>();
-	*/
-
- 
 
 	public OrderContent readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM order_contents ORDER BY order_contents_id DESC LIMIT 1");) {
+				ResultSet resultSet = statement
+						.executeQuery("SELECT * FROM order_contents ORDER BY order_contents_id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -113,8 +71,8 @@ public class OrderContentDAO implements Dao<OrderContent> {
 	@Override
 	public OrderContent create(OrderContent orderContent) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("INSERT INTO order_contents(fk_order_id, fk_item_id, quantity, price) VALUES (?, ?, ?, ?)");) {
+				PreparedStatement statement = connection.prepareStatement(
+						"INSERT INTO order_contents(fk_order_id, fk_item_id, quantity, price) VALUES (?, ?, ?, ?)");) {
 			statement.setLong(1, orderContent.getFkOrderId());
 			statement.setLong(2, orderContent.getFkItemId());
 			statement.setLong(3, orderContent.getQuantity());
@@ -131,7 +89,8 @@ public class OrderContentDAO implements Dao<OrderContent> {
 	@Override
 	public OrderContent read(Long orderContentsId) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("SELECT * FROM order_contents WHERE order_contents_id = ?");) {
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT * FROM order_contents WHERE order_contents_id = ?");) {
 			statement.setLong(1, orderContentsId);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				resultSet.next();
@@ -142,9 +101,9 @@ public class OrderContentDAO implements Dao<OrderContent> {
 			LOGGER.error(e.getMessage());
 		}
 		return null;
-	} 
-	//@Override
-	
+	}
+	// @Override
+
 	/**
 	 * Updates an Orders contents in the database
 	 * 
@@ -154,8 +113,8 @@ public class OrderContentDAO implements Dao<OrderContent> {
 	@Override
 	public OrderContent update(OrderContent orderContent) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("UPDATE order_contents SET fk_order_id = ?, fk_item_id = ?, quantity = ?, price = ? WHERE order_contents_id = ?");) {
+				PreparedStatement statement = connection.prepareStatement(
+						"UPDATE order_contents SET fk_order_id = ?, fk_item_id = ?, quantity = ?, price = ? WHERE order_contents_id = ?");) {
 			statement.setLong(1, orderContent.getFkOrderId());
 			statement.setLong(2, orderContent.getFkItemId());
 			statement.setLong(3, orderContent.getQuantity());
@@ -176,7 +135,8 @@ public class OrderContentDAO implements Dao<OrderContent> {
 	@Override
 	public int delete(long orderContentsId) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM order_contents WHERE order_contents_id = ?");) {
+				PreparedStatement statement = connection
+						.prepareStatement("DELETE FROM order_contents WHERE order_contents_id = ?");) {
 			statement.setLong(1, orderContentsId);
 			return statement.executeUpdate();
 		} catch (Exception e) {
@@ -184,51 +144,6 @@ public class OrderContentDAO implements Dao<OrderContent> {
 			LOGGER.error(e.getMessage());
 		}
 		return 0;
-		
+
 	}
-	//	public Long getQuantity() {
-	//		return this.quantity;
-	//	}
-		
-		
-		
-	}
-	/*
-	 * public OrderContent AddItem(OrderContent orderContent) { try (Connection
-	 * connection = DBUtils.getInstance().getConnection(); PreparedStatement
-	 * statement = connection
-	 * .prepareStatement("INSERT INTO order_contents(fk_item_id, quantity) VALUES (?, ?) WHERE fk_order_id = ?"
-	 * );) { statement.setLong(1, orderContent.getFkItemId()); statement.setLong(2,
-	 * orderContent.getQuantity()); statement.executeUpdate(); return
-	 * read(orderContent.getFkOrderId()); } catch (Exception e) { LOGGER.debug(e);
-	 * LOGGER.error(e.getMessage()); } return null; }
-	 * 
-	 * public OrderContent DeleteItem(OrderContent orderContent) { try (Connection
-	 * connection = DBUtils.getInstance().getConnection(); PreparedStatement
-	 * statement = connection
-	 * .prepareStatement("DELETE FROM order_contents(fk_item_id, quantity) WHERE fk_order_id = ?"
-	 * );) { statement.setLong(1, orderContent.getFkItemId()); statement.setLong(2,
-	 * orderContent.getQuantity()); statement.executeUpdate(); return
-	 * read(orderContent.getFkOrderId()); } catch (Exception e) { LOGGER.debug(e);
-	 * LOGGER.error(e.getMessage()); } return null; }
-	 */
-	
-
-
-//read items in order next
-
-/*
- * orderContentsId fkOrderId fkItemId quantity 1 4 5 2 2 4 4 3
- */
-
-
-/* SELECT order_contents.quantity, items.item_price
- * FROM order_contents
- * JOIN items
- * ON order_contents.fk_item_id = items.item_id
- * 	then need to 
- * SELECT quantity*price AS cost FROM products
- */
-
-
-
+}

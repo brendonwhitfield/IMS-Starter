@@ -17,9 +17,7 @@ import com.qa.ims.utils.DBUtils;
 public class ItemDAO implements Dao<Item> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
-	
-	// public Long itemPrice;
-	
+
 	@Override
 	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long itemId = resultSet.getLong("item_id");
@@ -27,10 +25,6 @@ public class ItemDAO implements Dao<Item> {
 		Long itemPrice = resultSet.getLong("item_price");
 		return new Item(itemId, itemName, itemPrice);
 	}
-
-	
-	
-
 
 	/*
 	 * Reads all items from the database
@@ -102,7 +96,7 @@ public class ItemDAO implements Dao<Item> {
 	}
 
 	/**
-	 * Updates an item in  the database
+	 * Updates an item in the database
 	 */
 	@Override
 	public Item update(Item item) {
@@ -138,10 +132,5 @@ public class ItemDAO implements Dao<Item> {
 		}
 		return 0;
 	}
-	
-	
-	// public Long getItemPrice() {
-		// return this.itemPrice;
-		// }
-	
+
 }
