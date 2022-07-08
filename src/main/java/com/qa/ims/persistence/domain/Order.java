@@ -2,21 +2,30 @@ package com.qa.ims.persistence.domain;
 
 import java.util.Objects;
 
+import com.qa.ims.persistence.dao.ItemDAO;
+import com.qa.ims.persistence.dao.OrderContentDAO;
+
 public class Order {
 
 	private Long orderId;
 	private Long fkCustomerId;
 	private String address;
+//	private ItemDAO itemDAO = new ItemDAO();
+//	private OrderContentDAO orderContentDAO = new OrderContentDAO();
+//	private Long totalCost;
 
+	
 	public Order(Long fkCustomerId, String address) {
 		this.setFkCustomerId(fkCustomerId);
 		this.setAddress(address);
+		//getTotalCost();
 	}
 
 	public Order(Long orderId, Long fkCustomerId, String address) {
 		this.setOrderId(orderId);
 		this.setFkCustomerId(fkCustomerId);
 		this.setAddress(address);
+
 	}
 
 	public Long getOrderId() {
@@ -43,9 +52,22 @@ public class Order {
 		this.address = address;
 	}
 
+	// readAll orderContentDao.getByOrder 
+			// loop through readAll for each order content
+			// (price) itemDao.getById OrderContentId  *  orderContent.quantity
+			// then =+ to totalCost
+	/*
+	 * public Long getTotalCost() {
+	 * 
+	 * this.totalCost = itemDAO.getItemPrice() * orderContentDAO.getQuantity();
+	 * return this.totalCost;
+	 */
+	
 	@Override
 	public String toString() {
-		return "order ID:" + orderId + "/n customer ID:" + fkCustomerId + "/n address" + address;
+		return "Order [orderId=" + orderId + ", fkCustomerId=" + fkCustomerId + ", address=" + address 
+				//+ ", totalCost=" + totalCost + ""
+						+ "]";
 	}
 
 	@Override
@@ -65,10 +87,7 @@ public class Order {
 		return Objects.equals(fkCustomerId, other.fkCustomerId)
 				&& Objects.equals(address, other.address) && Objects.equals(orderId, other.orderId);
 	}
-	// public int getTotalCost() {
-	// return 0;
-	// }
-	// loop through and calculate the cost
-	//
+		
+		
 
 }

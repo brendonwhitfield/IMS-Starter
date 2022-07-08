@@ -17,19 +17,23 @@ import com.qa.ims.utils.DBUtils;
 public class ItemDAO implements Dao<Item> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
-
+	
+	// public Long itemPrice;
+	
 	@Override
 	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long itemId = resultSet.getLong("item_id");
 		String itemName = resultSet.getString("item_name");
-		Double itemPrice = resultSet.getDouble("item_price");
+		Long itemPrice = resultSet.getLong("item_price");
 		return new Item(itemId, itemName, itemPrice);
 	}
 
-	/**
-	 * Reads all customers from the database
-	 * 
-	 * @return A list of customers
+	
+	
+
+
+	/*
+	 * Reads all items from the database
 	 */
 	@Override
 	public List<Item> readAll() {
@@ -61,10 +65,9 @@ public class ItemDAO implements Dao<Item> {
 		return null;
 	}
 
-	/**
-	 * Creates a customer in the database
+	/*
+	 * Creates an item in the database
 	 * 
-	 * @param customer - takes in a customer object. id will be ignored
 	 */
 	@Override
 	public Item create(Item item) {
@@ -72,7 +75,7 @@ public class ItemDAO implements Dao<Item> {
 				PreparedStatement statement = connection
 						.prepareStatement("INSERT INTO items(item_name, item_price) VALUES (?, ?)");) {
 			statement.setString(1, item.getItemName());
-			statement.setDouble(2, item.getItemPrice());
+			statement.setLong(2, item.getItemPrice());
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
@@ -99,11 +102,7 @@ public class ItemDAO implements Dao<Item> {
 	}
 
 	/**
-	 * Updates a customer in the database
-	 * 
-	 * @param customer - takes in a customer object, the id field will be used to
-	 *                 update that customer in the database
-	 * @return
+	 * Updates an item in  the database
 	 */
 	@Override
 	public Item update(Item item) {
@@ -111,7 +110,7 @@ public class ItemDAO implements Dao<Item> {
 				PreparedStatement statement = connection
 						.prepareStatement("UPDATE items SET item_name = ?, item_price = ? WHERE item_id = ?");) {
 			statement.setString(1, item.getItemName());
-			statement.setDouble(2, item.getItemPrice());
+			statement.setLong(2, item.getItemPrice());
 			statement.setLong(3, item.getItemId());
 			statement.executeUpdate();
 			return read(item.getItemId());
@@ -123,7 +122,7 @@ public class ItemDAO implements Dao<Item> {
 	}
 
 	/**
-	 * Deletes a customer in the database
+	 * Deletes an item in the database
 	 * 
 	 * @param id - id of the customer
 	 */
@@ -139,5 +138,10 @@ public class ItemDAO implements Dao<Item> {
 		}
 		return 0;
 	}
-
+	
+	
+	// public Long getItemPrice() {
+		// return this.itemPrice;
+		// }
+	
 }

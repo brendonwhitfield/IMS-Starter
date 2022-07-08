@@ -8,21 +8,30 @@ public class OrderContent {
 	private Long fkOrderId;
 	private Long fkItemId;
 	private Long quantity;
+	private Long price;
+	private Long cost;
 
-	public OrderContent(Long fkOrderId, Long fkItemId, Long quantity) {
+	public OrderContent(Long fkOrderId, Long fkItemId, Long quantity, Long price) {
 		this.setFkOrderId(fkOrderId);
 		this.setFkItemId(fkItemId);
 		this.setQuantity(quantity);
+		this.setPrice(price);
 	}
 
-	public OrderContent(Long orderContentsId, Long fkOrderId, Long fkItemId, Long quantity) {
+	public OrderContent(Long orderContentsId, Long fkOrderId, Long fkItemId, Long quantity, Long price) {
 		this.setOrderContentsId(orderContentsId);
 		this.setFkOrderId(fkOrderId);
 		this.setFkItemId(fkItemId);
 		this.setQuantity(quantity);
+		this.setPrice(price);
 	}
 
-	
+	/*
+	 * public Long cost(){
+	 * 
+	 * this.cost= price*quantity; return this.cost; }
+	 */
+
 	public Long getOrderContentsId() {
 		return orderContentsId;
 	}
@@ -54,19 +63,33 @@ public class OrderContent {
 	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
-	
-	public int getTotalCost() {
-		return 0;
+
+	public Long getPrice() {
+		return price;
+	}
+
+	public void setPrice(Long price) {
+		this.price = price;
+	}
+
+	public void setCost(Long cost) {
+		this.cost = cost;
+	}
+
+	public Long getCost() {
+		cost = getPrice() * getQuantity();
+		return this.cost;
 	}
 
 	@Override
 	public String toString() {
-		return "order contents id:" + orderContentsId + "/n order id:" + fkOrderId + "/n item id:" + fkItemId + "/n quantity:";
+		return "OrderContent [orderContentsId=" + orderContentsId + ", fkOrderId=" + fkOrderId + ", fkItemId="
+				+ fkItemId + ", quantity=" + quantity + ", price=" + price + ", cost=" + getCost() + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(fkItemId, fkOrderId, orderContentsId, quantity);
+		return Objects.hash(cost, fkItemId, fkOrderId, orderContentsId, price, quantity);
 	}
 
 	@Override
@@ -78,11 +101,9 @@ public class OrderContent {
 		if (getClass() != obj.getClass())
 			return false;
 		OrderContent other = (OrderContent) obj;
-		return Objects.equals(fkItemId, other.fkItemId) && Objects.equals(fkOrderId, other.fkOrderId)
-				&& Objects.equals(orderContentsId, other.orderContentsId) && Objects.equals(quantity, other.quantity);
+		return Objects.equals(cost, other.cost) && Objects.equals(fkItemId, other.fkItemId)
+				&& Objects.equals(fkOrderId, other.fkOrderId) && Objects.equals(orderContentsId, other.orderContentsId)
+				&& Objects.equals(price, other.price) && Objects.equals(quantity, other.quantity);
 	}
 
-	
-
 }
-
