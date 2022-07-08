@@ -1,5 +1,6 @@
 package com.qa.ims.persistence.dao;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,19 +12,20 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.OrderContent;
 import com.qa.ims.utils.DBUtils;
 
-public class CustomerDAO implements Dao<Customer> {
+public class OrderContentDAO implements Dao<OrderContent> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	@Override
-	public Customer modelFromResultSet(ResultSet resultSet) throws SQLException {
-		Long customerId = resultSet.getLong("customer_id");
-		String firstName = resultSet.getString("first_name");
-		String surname = resultSet.getString("surname");
-		return new Customer(customerId, firstName, surname);
+	public OrderContent modelFromResultSet(ResultSet resultSet) throws SQLException {
+		Long orderContentsId = resultSet.getLong("order_contents_id");
+		Long fkOrderId = resultSet.getLong("fk_order_id");
+		Long fkItemId = resultSet.getLong("fk_item_id");
+		Long quantity = resultSet.getLong("quantity");
+		return new OrderContent(orderContentsId, fkOrderId, fkItemId, quantity);
 	}
 
 	/**
@@ -32,15 +34,15 @@ public class CustomerDAO implements Dao<Customer> {
 	 * @return A list of customers
 	 */
 	@Override
-	public List<Customer> readAll() {
+	public List<OrderContent> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers");) {
-			List<Customer> customers = new ArrayList<>();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM order_contents");) {
+			List<OrderContent> orders = new ArrayList<>();
 			while (resultSet.next()) {
-				customers.add(modelFromResultSet(resultSet));
+				orders.add(modelFromResultSet(resultSet));
 			}
-			return customers;
+			return orders;
 		} catch (SQLException e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -48,10 +50,10 @@ public class CustomerDAO implements Dao<Customer> {
 		return new ArrayList<>();
 	}
 
-	public Customer readLatest() {
+	public OrderContent readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY customer_id DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM order_contents ORDER BY order_contents_id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -67,12 +69,13 @@ public class CustomerDAO implements Dao<Customer> {
 	 * @param customer - takes in a customer object. id will be ignored
 	 */
 	@Override
-	public Customer create(Customer customer) {
+	public OrderContent create(OrderContent orderContent) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("INSERT INTO customers(first_name, surname) VALUES (?, ?)");) {
-			statement.setString(1, customer.getFirstName());
-			statement.setString(2, customer.getSurname());
+						.prepareStatement("INSERT INTO order_contents(fk_order_id, fk_item_id, quantity) VALUES (?, ?, ?)");) {
+			statement.setLong(1, orderContent.getFkOrderId());
+			statement.setLong(2, orderContent.getFkItemId());
+			statement.setLong(3, orderContent.getQuantity());
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
@@ -83,10 +86,10 @@ public class CustomerDAO implements Dao<Customer> {
 	}
 
 	@Override
-	public Customer read(Long customerId) {
+	public OrderContent read(Long orderContentsId) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("SELECT * FROM customers WHERE customer_id = ?");) {
-			statement.setLong(1, customerId);
+				PreparedStatement statement = connection.prepareStatement("SELECT * FROM order_contents WHERE order_contents_id = ?");) {
+			statement.setLong(1, orderContentsId);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				resultSet.next();
 				return modelFromResultSet(resultSet);
@@ -106,15 +109,15 @@ public class CustomerDAO implements Dao<Customer> {
 	 * @return
 	 */
 	@Override
-	public Customer update(Customer customer) {
+	public OrderContent update(OrderContent orderContent) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? WHERE customer_id = ?");) {
-			statement.setString(1, customer.getFirstName());
-			statement.setString(2, customer.getSurname());
-			statement.setLong(3, customer.getCustomerId());
+						.prepareStatement("UPDATE order_contents SET fk_order_id = ?, fk_item_id = ?, quantity = ? WHERE order_contents_id = ?");) {
+			statement.setLong(1, orderContent.getFkOrderId());
+			statement.setLong(2, orderContent.getFkItemId());
+			statement.setLong(3, orderContent.getQuantity());
 			statement.executeUpdate();
-			return read(customer.getCustomerId());
+			return read(orderContent.getOrderContentsId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -128,10 +131,10 @@ public class CustomerDAO implements Dao<Customer> {
 	 * @param id - id of the customer
 	 */
 	@Override
-	public int delete(long customerId) {
+	public int delete(long orderContentsId) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM customers WHERE customer_id = ?");) {
-			statement.setLong(1, customerId);
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM order_contents WHERE order_contents_id = ?");) {
+			statement.setLong(1, orderContentsId);
 			return statement.executeUpdate();
 		} catch (Exception e) {
 			LOGGER.debug(e);
