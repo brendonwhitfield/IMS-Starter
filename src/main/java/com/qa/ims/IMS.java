@@ -7,7 +7,11 @@ import com.qa.ims.controller.Action;
 import com.qa.ims.controller.CrudController;
 import com.qa.ims.controller.CustomerController;
 import com.qa.ims.controller.ItemsController;
+import com.qa.ims.controller.OrderController;
+import com.qa.ims.controller.OrderContentsController;
 import com.qa.ims.persistence.dao.CustomerDAO;
+import com.qa.ims.persistence.dao.OrderDAO;
+import com.qa.ims.persistence.dao.OrderContentDAO;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.utils.DBUtils;
@@ -19,6 +23,9 @@ public class IMS {
 
 	private final CustomerController customers;
 	private final ItemsController items;
+	private final OrderController orders;
+	private final OrderContentsController orderContents;
+
 	private final Utils utils;
 
 	public IMS() {
@@ -27,6 +34,10 @@ public class IMS {
 		this.customers = new CustomerController(custDAO, utils);
 		final ItemDAO itDAO = new ItemDAO();
 		this.items = new ItemsController(itDAO, utils);
+		final OrderDAO orDAO = new OrderDAO();
+		this.orders = new OrderController(orDAO, utils);
+		final OrderContentDAO orcoDAO = new OrderContentDAO();
+		this.orderContents = new OrderContentsController(orcoDAO, utils);
 	}
 
 	public void imsSystem() {
@@ -58,6 +69,10 @@ public class IMS {
 				active = this.items;
 				break;
 			case ORDER:
+				active = this.orders;
+				break;
+			case ORDERCONTENT:
+				active = this.orderContents;
 				break;
 			case STOP:
 				return;
@@ -65,7 +80,7 @@ public class IMS {
 				break;
 			}
 
-			LOGGER.info(() ->"What would you like to do with " + domain.name().toLowerCase() + ":");
+			LOGGER.info(() -> "What would you like to do with " + domain.name().toLowerCase() + ":");
 
 			Action.printActions();
 			Action action = Action.getAction(utils);

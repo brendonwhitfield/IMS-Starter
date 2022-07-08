@@ -27,9 +27,7 @@ public class OrderDAO implements Dao<Order> {
 	}
 
 	/**
-	 * Reads all customers from the database
-	 * 
-	 * @return A list of customers
+	 * Reads all orders from the database
 	 */
 	@Override
 	public List<Order> readAll() {
@@ -62,9 +60,7 @@ public class OrderDAO implements Dao<Order> {
 	}
 
 	/**
-	 * Creates a customer in the database
-	 * 
-	 * @param customer - takes in a customer object. id will be ignored
+	 * Creates an order in the database
 	 */
 	@Override
 	public Order create(Order order) {
@@ -99,12 +95,8 @@ public class OrderDAO implements Dao<Order> {
 	}
 
 	/**
-	 * Updates a customer in the database
-	 * 
-	 * @param customer - takes in a customer object, the id field will be used to
-	 *                 update that customer in the database
-	 * @return
-	 * 
+	 * Updates an order in the database
+	 *
 	 * maybe remove customer as customer wont change necessarily
 	 */
 	@Override
@@ -114,6 +106,7 @@ public class OrderDAO implements Dao<Order> {
 						.prepareStatement("UPDATE orders SET fk_customer_id = ?, address = ? WHERE order_id = ?");) {
 			statement.setLong(1, order.getFkCustomerId());
 			statement.setString(2, order.getAddress());
+			statement.setLong(3, order.getOrderId());
 			statement.executeUpdate();
 			return read(order.getOrderId());
 		} catch (Exception e) {
@@ -124,9 +117,7 @@ public class OrderDAO implements Dao<Order> {
 	}
 
 	/**
-	 * Deletes a customer in the database
-	 * 
-	 * @param id - id of the customer
+	 * Deletes an order in the database
 	 */
 	@Override
 	public int delete(long orderId) {

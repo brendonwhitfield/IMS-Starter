@@ -11,12 +11,14 @@ public class Order {
 	public Order(Long fkCustomerId, String address) {
 		this.setFkCustomerId(fkCustomerId);
 		this.setAddress(address);
+
 	}
 
 	public Order(Long orderId, Long fkCustomerId, String address) {
 		this.setOrderId(orderId);
 		this.setFkCustomerId(fkCustomerId);
 		this.setAddress(address);
+
 	}
 
 	public Long getOrderId() {
@@ -45,7 +47,9 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "order ID:" + orderId + "/n customer ID:" + fkCustomerId + "/n address" + address;
+		return "Order [orderId=" + orderId + ", fkCustomerId=" + fkCustomerId + ", address=" + address
+		// + ", totalCost=" + totalCost + ""
+				+ "]";
 	}
 
 	@Override
@@ -62,13 +66,8 @@ public class Order {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		return Objects.equals(fkCustomerId, other.fkCustomerId)
-				&& Objects.equals(address, other.address) && Objects.equals(orderId, other.orderId);
+		return Objects.equals(fkCustomerId, other.fkCustomerId) && Objects.equals(address, other.address)
+				&& Objects.equals(orderId, other.orderId);
 	}
-	// public int getTotalCost() {
-	// return 0;
-	// }
-	// loop through and calculate the cost
-	//
 
 }

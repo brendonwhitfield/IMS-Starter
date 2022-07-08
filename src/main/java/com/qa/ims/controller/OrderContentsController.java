@@ -10,7 +10,7 @@ import com.qa.ims.persistence.domain.OrderContent;
 import com.qa.ims.utils.Utils;
 
 /**
- * Takes in customer details for CRUD functionality
+ * Takes in contents of an order for CRUD functionality
  *
  */
 public class OrderContentsController implements CrudController<OrderContent> {
@@ -27,7 +27,7 @@ public class OrderContentsController implements CrudController<OrderContent> {
 	}
 
 	/**
-	 * Reads all customers to the logger
+	 * Reads all order contents to the logger
 	 */
 	@Override
 	public List<OrderContent> readAll() {
@@ -39,7 +39,7 @@ public class OrderContentsController implements CrudController<OrderContent> {
 	}
 
 	/**
-	 * Creates a customer by taking in user input
+	 * Creates an order content by taking in user input
 	 */
 	@Override
 	public OrderContent create() {
@@ -49,31 +49,36 @@ public class OrderContentsController implements CrudController<OrderContent> {
 		Long fkItemId = utils.getLong();
 		LOGGER.info("Please enter the quantity");
 		Long quantity = utils.getLong();
-		OrderContent orderContent = OrderContentDAO.create(new OrderContent(fkOrderId, fkItemId, quantity));
+		LOGGER.info("Please enter the price in GBP");
+		Long price = utils.getLong();
+		OrderContent orderContent = OrderContentDAO.create(new OrderContent(fkOrderId, fkItemId, quantity, price));
 		LOGGER.info("Order contents now created!");
 		return orderContent;
 	}
 
 	/**
-	 * Updates an existing customer by taking in user input
+	 * Updates an existing order content by taking in user input
 	 */
 	@Override
 	public OrderContent update() {
 		LOGGER.info("Please enter the ID of the order contents you would like to update");
 		Long orderContentsId = utils.getLong();
-		LOGGER.info("Please enter the order ID");
+		LOGGER.info("Please enter the same order ID as before");
 		Long fkOrderId = utils.getLong();
 		LOGGER.info("Please enter the item ID");
 		Long fkItemId = utils.getLong();
 		LOGGER.info("Please enter the quantity");
 		Long quantity = utils.getLong();
-		OrderContent orderContent = OrderContentDAO.update(new OrderContent(orderContentsId, fkOrderId, fkItemId, quantity));
+		LOGGER.info("Please enter the price in GBP");
+		Long price = utils.getLong();
+		OrderContent orderContent = OrderContentDAO
+				.update(new OrderContent(orderContentsId, fkOrderId, fkItemId, quantity, price));
 		LOGGER.info("Order Contents Updated");
 		return orderContent;
 	}
 
 	/**
-	 * Deletes an existing customer by the id of the customer
+	 * Deletes an existing order content by the id of the customer
 	 * 
 	 * @return
 	 */
