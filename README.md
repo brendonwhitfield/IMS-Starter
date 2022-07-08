@@ -30,7 +30,7 @@ Due to issues encountered I never managed to complete tests, I began JUnit tests
 A unit test is a type of class that allows you to create methods to test methods/units within the corresponding class your trying to test.
 
 This is an example of the functional skeleton test for 'Customer':
-!https://github.com/brendonwhitfield/IMS-Starter/edit/master/README.md
+![https://github.com/brendonwhitfield/IMS-Starter/edit/master/README.md]
 
 ## Deployment
 
